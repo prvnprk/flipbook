@@ -8,9 +8,9 @@
 
 enum primaryModes {
 	DRAW,
-	SELECT,
+	// SELECT,
 	FILL,
-	MOVE,
+	// MOVE,
 	ERASE
 };
 

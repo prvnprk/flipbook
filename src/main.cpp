@@ -92,7 +92,7 @@ int main() {
 
 		}
 		gui.update(deltaClock.restart());
-		gui.startUp();
+		gui.init();
 
 		//if (animationState.isPlaying) {
 		//	if (animationState.clock.getElapsedTime().asMilliseconds() >=  ((*currentState.nCanvas)[currentState.currentFrame].frameTime)) {

@@ -1,11 +1,11 @@
 file(GLOB SOURCES "*.cpp")
 
-file(GLOB HEADERS "*.h" "*.hpp")
+file(GLOB HEADERS "*.h" "*.hpp" "include/*.h" "include/*.hpp")
 
 set(ALL_FILES ${SOURCES} ${HEADERS})
 
 add_executable(flipbook ${ALL_FILES})
-target_link_libraries(flipbook PRIVATE ImGui-SFML::ImGui-SFML )
+target_link_libraries(flipbook PRIVATE ImGui-SFML::ImGui-SFML nfd)
 
 # Copy DLLs needed for runtime on Windows
 if(WIN32)

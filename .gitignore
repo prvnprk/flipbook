@@ -1,6 +1,7 @@
 
 cmake-build-*/
 build/
+build-release/
 
 .idea/
 
@@ -26,3 +27,5 @@ compile_commands.json
 
 *.log
 *.tmp
+
+out/

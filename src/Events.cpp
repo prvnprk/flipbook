@@ -119,12 +119,12 @@ void handleEvent(sf::Event &event, sf::RenderWindow &window) {
 		case DRAW:
 			handleDraw(event, window);
 			break;
-		case MOVE:
-			handleMove(event, window);
-			break;
-		case SELECT:
-			handleSelect(event, window);
-			break;
+		// case MOVE:
+		// 	handleMove(event, window);
+		// 	break;
+		// case SELECT:
+		// 	handleSelect(event, window);
+		// 	break;
 
 		case FILL:
 			handleFill(event, window);
