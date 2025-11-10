@@ -34,7 +34,7 @@ int main() {
 
 
 
-	sf::RenderWindow window(sf::VideoMode({ WIDTH,HEIGHT }), "Flipbook");
+	sf::RenderWindow window(sf::VideoMode({ WIDTH,HEIGHT }), "pikzel");
 	// ImGui::SFML::Init(window);
 
 	window.setVerticalSyncEnabled(true);

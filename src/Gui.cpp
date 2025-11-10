@@ -177,6 +177,12 @@ void Gui::menuBar() {
                 showStartupWindow = true;
             }
 
+            if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                FileUtils s(*currentState.nCanvas);
+
+                s.save();
+            }
+
             if (ImGui::MenuItem("Open", "Ctrl+O")) {
                 FileUtils o(*currentState.nCanvas);
                 std::string outpath = o.open();
