@@ -4,7 +4,7 @@
 #include "include/nfd.h"
 
 
-FileUtils::FileUtils(std::vector<Canvas>& frames) :frames(frames) {}
+FileUtils::FileUtils(std::list<Canvas>& frames) :frames(frames) {}
 
 void FileUtils::save() {
     if (frames.empty()) {

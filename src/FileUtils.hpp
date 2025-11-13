@@ -13,8 +13,10 @@ public:
 	
 	//FileUtils();
 
-	std::vector<Canvas>& frames;
-	FileUtils(std::vector<Canvas>& frames);
+	// std::vector<Canvas>& frames;
+	// FileUtils(std::vector<Canvas>& frames);
+	std::list<Canvas>& frames;
+	FileUtils(std::list<Canvas>& frames);
 
 
 	void convertToGif(uint32_t scale = 1);

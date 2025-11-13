@@ -20,7 +20,7 @@ typedef struct States {
 	primaryModes			pmode;
 	Canvas					*canvas;
 	sf::Color				selectedColor;
-	std::vector<Canvas>		*nCanvas;
+	std::list<Canvas>		*nCanvas;
 	uint16_t				width;
 	uint16_t				height;
 	sf::Vector2f			canvasPosition;

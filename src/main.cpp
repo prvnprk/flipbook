@@ -44,9 +44,9 @@ int main() {
 
 
 
-	std::vector<Canvas> nCanvas;
+	std::list<Canvas> nCanvas;
 	currentState.nCanvas = &nCanvas;
-	nCanvas.reserve(1000);
+	// nCanvas.reserve(1000);
 
 
 	Gui gui(window);
@@ -61,7 +61,11 @@ int main() {
 
 
 		currentFrame = currentState.currentFrame;
-		currentState.canvas = &nCanvas[currentFrame];
+		// currentState.canvas = &nCanvas[currentFrame];
+		std::list<Canvas>::iterator currentCanvasIt = nCanvas.begin();
+		std::advance(currentCanvasIt, currentFrame);
+		currentState.canvas = &(*currentCanvasIt);
+
 
 		if (started) {
 			resize(window);
@@ -123,7 +127,12 @@ int main() {
 				accumulator = sf::seconds(1.0f);
 
 
-			float frameDuration = (*currentState.nCanvas)[currentState.currentFrame].frameTime / 1000.f;
+			// float frameDuration = (*currentState.nCanvas)[currentState.currentFrame].frameTime / 1000.f;
+			auto it2 = currentState.nCanvas->begin();
+			std::advance(it2, currentState.currentFrame);
+			float frameDuration = it2->frameTime / 1000.f;
+
+
 			if (frameDuration <= 0.0f)
 				frameDuration = 0.1f;
 
@@ -172,7 +181,12 @@ int main() {
 
 			size_t size = currentState.nCanvas->size();
 			size_t prevFrame = (currentState.currentFrame + size - 1) % size;
-			currentState.canvas->setOnion((*currentState.nCanvas)[prevFrame].canvasImage);
+			// currentState.canvas->setOnion((*currentState.nCanvas)[prevFrame].canvasImage);
+
+			auto it = currentState.nCanvas->begin();
+			std::advance(it, prevFrame);
+			currentState.canvas->setOnion(it->canvasImage);
+
 		}
 
 	}

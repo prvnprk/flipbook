@@ -69,7 +69,8 @@ void Gui::startUp() {
                 }
 
                 currentState.currentFrame = 0;
-                currentState.canvas = &(*currentState.nCanvas)[0];
+                // currentState.canvas = &(*currentState.nCanvas)[0];
+                currentState.canvas = &(*currentState.nCanvas).front();
 
                 showStartupWindow = false;
                 errorMsg.clear();
@@ -263,7 +264,8 @@ void Gui::menuBar() {
                     currentState.width = pxrtFile.canvasData[0].width;
                     currentState.height = pxrtFile.canvasData[0].height;
                     currentState.currentFrame = 0;
-                    currentState.canvas = &(*currentState.nCanvas)[0];
+                    // currentState.canvas = &(*currentState.nCanvas)[0];
+                    currentState.canvas = &(*currentState.nCanvas).front();
 
                     resize(window);
                 }
@@ -303,7 +305,10 @@ void Gui::menuBar() {
             if (ImGui::MenuItem("Copy Onion", "Ctrl+Alt+C")) {
                 if (!currentState.canvas->isOnionCopied && currentState.currentFrame != 0) {
                     size_t prevFrame = (currentState.currentFrame + currentState.nCanvas->size() - 1) % currentState.nCanvas->size();
-                    currentState.canvas->copyOnionToCanvas((*currentState.nCanvas)[prevFrame].canvasImage);
+                    // currentState.canvas->copyOnionToCanvas((*currentState.nCanvas)[prevFrame].canvasImage);
+                    auto it = currentState.nCanvas->begin();
+                    std::advance(it, prevFrame);
+                    currentState.canvas->copyOnionToCanvas(it->canvasImage);
                 }
             }
 
@@ -646,7 +651,10 @@ void Gui::drawAnimationPanel() {
     if (ImGui::Button("Copy Onion", ImVec2(130, 30))) {
         if (!currentState.canvas->isOnionCopied && currentState.currentFrame != 0) {
             size_t prevFrame = (currentState.currentFrame + currentState.nCanvas->size() - 1) % currentState.nCanvas->size();
-            currentState.canvas->copyOnionToCanvas((*currentState.nCanvas)[prevFrame].canvasImage);
+            // currentState.canvas->copyOnionToCanvas((*currentState.nCanvas)[prevFrame].canvasImage);
+            auto it = currentState.nCanvas->begin();
+            std::advance(it, prevFrame);
+            currentState.canvas->copyOnionToCanvas(it->canvasImage);
         }
     }
     ImGui::SameLine();
@@ -679,7 +687,11 @@ void Gui::drawAnimationPanel() {
 
         if (ImGui::Button(buf, ImVec2(40, 40))) {
             currentState.currentFrame = i;
-            currentState.canvas = &(*currentState.nCanvas)[i];
+            // currentState.canvas = &(*currentState.nCanvas)[i];
+            auto it = currentState.nCanvas->begin();
+            std::advance(it, i);
+            currentState.canvas = &(*it);
+
         }
 
         if (currentState.currentFrame == i) {
@@ -699,7 +711,11 @@ void Gui::drawAnimationPanel() {
             currentState.nCanvas->emplace_back(&window, currentState.width, currentState.height, currentState.canvasPosition);
         }
         currentState.currentFrame = currentState.nCanvas->size() - 1;
-        currentState.canvas = &(*currentState.nCanvas)[currentState.currentFrame];
+        // currentState.canvas = &(*currentState.nCanvas)[currentState.currentFrame];
+        auto it = currentState.nCanvas->begin();
+        std::advance(it, currentState.currentFrame);
+        currentState.canvas = &(*it);
+
     }
 
     ImGui::EndChild();
