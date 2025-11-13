@@ -169,6 +169,65 @@ void Gui::init() {
 }
 
 void Gui::menuBar() {
+
+    static bool showGifScaleDialog = false;
+    static bool showPngScaleDialog = false;
+    static int gifScale = 1;
+    static int pngScale = 1;
+
+    if (showGifScaleDialog)
+    {
+        ImGui::Begin("Export GIF", &showGifScaleDialog, ImGuiWindowFlags_AlwaysAutoResize);
+
+        ImGui::Text("Scale Canvas:");
+        ImGui::InputInt("Scale factor", &gifScale);
+        if (gifScale < 1) gifScale = 1;
+
+        if (ImGui::Button("Export"))
+        {
+            FileUtils e(*currentState.nCanvas);
+            e.convertToGif(gifScale);
+            showGifScaleDialog = false;
+            gifScale = 1;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            showGifScaleDialog = false;
+            gifScale = 1;
+        }
+
+        ImGui::End();
+    }
+
+    if (showPngScaleDialog)
+    {
+        ImGui::Begin("Export PNG", &showPngScaleDialog, ImGuiWindowFlags_AlwaysAutoResize);
+
+        ImGui::Text("Scale Canvas:");
+        ImGui::InputInt("Scale factor", &pngScale);
+        if (pngScale < 1) pngScale = 1;
+
+        if (ImGui::Button("Export"))
+        {
+            FileUtils e(*currentState.nCanvas);
+            e.convertToPng(pngScale);
+            showPngScaleDialog = false;
+            pngScale = 1;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            showPngScaleDialog = false;
+            pngScale = 1;
+        }
+
+        ImGui::End();
+    }
+
+
+
+
     if (ImGui::BeginMainMenuBar()) {
 
         // ----- File Menu -----
@@ -210,16 +269,15 @@ void Gui::menuBar() {
                 }
             }
 
-            // Export submenu
             if (ImGui::BeginMenu("Export")) {
                 if (ImGui::MenuItem("Export as GIF", "Ctrl+Shift+G")) {
-                    FileUtils e(*currentState.nCanvas);
-                    e.convertToGif();  // current logic
-                    currentState.canvas->exportCanvasImage();
+                    showGifScaleDialog = true;
+
+
                 }
                 if (ImGui::MenuItem("Export as PNG", "Ctrl+Shift+P")) {
-                    // FileUtils e(*currentState.nCanvas);
-                    // e.convertToPng();  // implement convertToPng() in FileUtils
+                    showPngScaleDialog = true;
+
                 }
                 ImGui::EndMenu();
             }
@@ -235,6 +293,7 @@ void Gui::menuBar() {
             if (ImGui::MenuItem("Cut", "Ctrl+X")) { /* implement */ }
             if (ImGui::MenuItem("Copy", "Ctrl+C")) { /* implement */ }
             if (ImGui::MenuItem("Paste", "Ctrl+V")) { /* implement */ }
+
 
             ImGui::Separator();
 

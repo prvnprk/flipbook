@@ -69,7 +69,7 @@ public:
 	sf::Vector2f		getCanvasOrigin();
 	void				setPixel(sf::Vector2u coords, sf::Color color);
 	void				move(sf::Vector2f offset);
-	void				exportCanvasImage();
+	void				exportCanvasImage(const std::filesystem::path& filename);
 	void				setCanvasFrameTime(float frameTime);
 	float				getCanvasFrameTime();
 	void				pushToUndoStack();

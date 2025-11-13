@@ -1,4 +1,6 @@
 include(FetchContent)
+
+
 #  URL_MD5 2c4438b3e5b2d81a6e626ecf72bf75be
 # SFML
 FetchContent_Declare(
@@ -29,6 +31,7 @@ add_subdirectory(imgui-sfml)
 # --------------------------
 # Native File Dialog Extended
 # --------------------------
+
 FetchContent_Declare(
         nfd
         URL https://github.com/btzy/nativefiledialog-extended/archive/refs/tags/v1.2.1.zip

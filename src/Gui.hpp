@@ -8,6 +8,7 @@
 #include "pxrt.hpp"
 #include "Events.hpp"
 #include "include/nfd.hpp"
+#include "misc.h"
 
 
 class Gui

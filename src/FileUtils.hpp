@@ -17,7 +17,8 @@ public:
 	FileUtils(std::vector<Canvas>& frames);
 
 
-	void convertToGif();
+	void convertToGif(uint32_t scale = 1);
+	void convertToPng(uint32_t scale = 1);
 	std::string open();
 	void save();
 

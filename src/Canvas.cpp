@@ -70,6 +70,7 @@ void Canvas::Draw(bool onionState, bool gridState)
 	if (gridState) {
 		grid();
 		window->draw(pixelGrid, sf::RenderStates(canvasImageSprite.getTransform()));
+
 	}
 
 
@@ -116,8 +117,8 @@ sf::Vector2f Canvas::getCanvasOrigin() {
 	return canvasImageSprite.getOrigin();
 }
 
-void Canvas::exportCanvasImage() {
-	canvasImage.saveToFile("D:/canvasimage.png");
+void Canvas::exportCanvasImage(const std::filesystem::path& filename) {
+	canvasImage.saveToFile(filename);
 }
 
 
