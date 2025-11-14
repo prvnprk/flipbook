@@ -9,6 +9,14 @@
 #include "Events.hpp"
 #include "include/nfd.hpp"
 #include "misc.h"
+#include "TextEditor.h"
+
+#include "LuaEmbed.h"
+
+
+#include "FileUtils.hpp"
+#include "States.hpp"
+
 
 
 class Gui
@@ -17,6 +25,8 @@ class Gui
 	sf::RenderWindow& window;
 	inline static bool showColorPicker = false;
 	inline static bool showStartupWindow = false;
+	TextEditor editor;
+	LuaEmbed *lua;
 
 
 public:
@@ -41,6 +51,8 @@ public:
 	void drawAnimationPanel();
 	void drawToolBar();
 	void drawColorShadesPanel();
+	void codeWindow();
+
 
 
 };

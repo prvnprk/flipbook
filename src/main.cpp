@@ -52,6 +52,7 @@ int main() {
 	Gui gui(window);
 
 
+
 	nCanvas.emplace_back(&window, currentState.width, currentState.height);
 	nCanvas.emplace_back(&window, currentState.width, currentState.height);
 
@@ -191,7 +192,6 @@ int main() {
 
 	}
 	// ImGui::SFML::Shutdown();
-	gui.~Gui();
 
 	return 0;
 }

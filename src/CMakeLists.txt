@@ -7,6 +7,10 @@ set(ALL_FILES ${SOURCES} ${HEADERS})
 add_executable(pikzel ${ALL_FILES})
 target_link_libraries(pikzel PRIVATE ImGui-SFML::ImGui-SFML nfd)
 
+
+target_link_libraries(pikzel PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/libs/lua54.lib")
+
+
 # Copy DLLs needed for runtime on Windows
 if(WIN32)
   if (BUILD_SHARED_LIBS)

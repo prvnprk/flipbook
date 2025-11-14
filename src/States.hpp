@@ -27,7 +27,9 @@ typedef struct States {
 	sf::Color				canvasBackgroundColor;
 	bool					onion;
 	bool					grid;
+	bool					codeEditor;
 	std::filesystem::path	savedPath;
+	bool editorFocused;
 
 };
 

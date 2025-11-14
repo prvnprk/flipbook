@@ -19,7 +19,7 @@ class Canvas
 public:
 
 	struct ImageState {
-		std::vector<uint8_t> pixels; 
+		std::vector<uint8_t> pixels;
 		//std::size_t hash;
 	};
 	std::stack<ImageState> undoStack;
@@ -43,17 +43,17 @@ public:
 	std::unordered_map<std::string, sf::Texture> externalTextures;
 
 	unsigned int					frameTime = 0;
-	
+
 	inline static sf::Vector2f sharedOrigin = {0.0f, 0.0f};
 	inline static sf::Vector2f canvasPosition = { 0.0f, 0.0f };
 
 	bool isOnionCopied = false;
 	bool isGridOn = true;
 
-	sf::VertexArray pixelGrid; 
-	sf::Color gridColor; 
+	sf::VertexArray pixelGrid;
+	sf::Color gridColor;
 
-	
+
 	Canvas(sf::RenderWindow* window, uint16_t width, uint16_t height);
 	Canvas(sf::RenderWindow* window, uint16_t width, uint16_t height, sf::Vector2f canvasPosition);
 	~Canvas();
@@ -63,7 +63,7 @@ public:
 	void				Draw(bool onionState, bool gridState);
 	void				Display();
 	void				SetCanvasPosition(sf::Vector2f positionCoords);
-	
+
 	sf::Vector2f		getCanvasPosition();
 	sf::Vector2u		getCanvasSize();
 	sf::Vector2f		getCanvasOrigin();
@@ -79,7 +79,7 @@ public:
 	void				copyOnionToCanvas(const sf::Image &source);
 
 	void				grid();
-	
+
 	const std::uint8_t* getCanvasPixelPtr();
 
 

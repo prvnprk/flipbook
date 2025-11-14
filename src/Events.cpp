@@ -186,8 +186,10 @@ void handleUndo(sf::Event& event, sf::RenderWindow& window) {
 
 			if (keyPressed->control && keyPressed->scancode == sf::Keyboard::Scan::Z) {
 
-				std::cout << "ctrlz" << std::endl;
-				currentState.canvas->popFromUndoStack();
+				if (!currentState.editorFocused) {
+					currentState.canvas->popFromUndoStack();
+				}
+
 
 			}
 		}
@@ -226,6 +228,7 @@ void handleSelect(sf::Event& event, sf::RenderWindow& window) {
 		sf::Vector2f originOffset = currentState.canvas->getCanvasOrigin();
 		sf::Vector2f localPos = selectionBox.getPosition() - (currentState.canvas->getCanvasPosition() - originOffset);
 		std::cout << "size: " << selectionBox.getSize().x << " " << selectionBox.getSize().y << std::endl;
+
 		std::cout << "position: " << localPos.x << " " << localPos.y << std::endl;
 
 	}

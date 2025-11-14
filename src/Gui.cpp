@@ -1,7 +1,5 @@
 #include "Gui.hpp"
 
-#include "FileUtils.hpp"
-#include "States.hpp"
 
 Gui::Gui(sf::RenderWindow& window) : window(window)
 {
@@ -9,13 +7,32 @@ Gui::Gui(sf::RenderWindow& window) : window(window)
 	ImGuiIO& io = ImGui::GetIO();
 
 
-	ImFont* font = io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/arial.ttf", 22.0f);
+	// ImFont* font = io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/arial.ttf", 22.0f);
+	//
+	//
+	// io.FontDefault = font;
+	//
+	//
+	// ImGui::SFML::UpdateFontTexture();
+
+    ImFont* font = io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/arial.ttf", 22.0f);
+    if (font) {
+        io.FontDefault = font;
+        ImGui::SFML::UpdateFontTexture();
+    } else {
+        // fallback: leave default font (or log)
+        std::cerr << "Warning: could not load arial.ttf; using default font\n";
+    }
 
 
-	io.FontDefault = font;
+    editor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
+    editor.SetShowWhitespaces(false);
+    editor.SetTabSize(4);
+    editor.SetReadOnly(false);
+    editor.SetText("--Hello world!\n--This is a test.");
 
+    lua = new LuaEmbed();
 
-	ImGui::SFML::UpdateFontTexture();
 
 }
 
@@ -23,12 +40,16 @@ Gui::Gui(sf::RenderWindow& window) : window(window)
 Gui::~Gui()
 {
 	ImGui::SFML::Shutdown();
+    delete lua;
 }
 
 
 
+
+
+
 void Gui::startUp() {
-    if (!showStartupWindow) return; // boolean flag to show/hide window
+    if (!showStartupWindow) return;
 
     ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(250, 200), ImGuiCond_Once);
@@ -167,7 +188,74 @@ void Gui::init() {
     drawColorShadesPanel();
 	drawAnimationPanel();
 
+
 }
+//
+// void Gui::codeWindow() {
+//
+//
+//
+//     static char buffer[1024 * 16] = ""; // 16 KB buffer for text
+//
+//         ImGui::Begin("Textarea Example");
+//
+//         ImGui::Text("Enter text below:");
+//
+//         ImGui::InputTextMultiline(
+//             "##textarea",     // label (can hide with ##)
+//             buffer,           // buffer to store text
+//             IM_ARRAYSIZE(buffer), // size of buffer
+//             ImVec2(-FLT_MIN, 200), // size (width=-automatic, height=200px)
+//             ImGuiInputTextFlags_AllowTabInput // optional flags
+//         );
+//
+//         ImGui::End();
+//
+// }
+
+
+void Gui::codeWindow() {
+    if (!currentState.codeEditor)
+        return;
+
+    if (ImGui::Begin("Lua Code Editor", &currentState.codeEditor))
+    {
+        // ImGui::Text("LUA");
+
+        bool editorFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+        currentState.editorFocused = editorFocused;
+
+        if (ImGui::Button("Run"))
+        {
+
+            std::string code = editor.GetText();
+
+
+
+            // Execute Lua code
+            if (lua->luaDoString(code.c_str()) != LUA_OK)
+            {
+                std::cerr << "Lua error: " << lua->luaToString(-1) << std::endl;
+                lua->luaPopStack(1);
+            }
+
+
+        }
+
+
+
+        // Optional: set window height dynamically
+        ImVec2 editorSize = ImVec2(-FLT_MIN, -FLT_MIN);
+
+        editor.Render("CodeEditor", editorSize);
+    }
+
+
+
+    ImGui::End();
+}
+
+
 
 void Gui::menuBar() {
 
@@ -317,9 +405,13 @@ void Gui::menuBar() {
 
         // ----- View Menu -----
         if (ImGui::BeginMenu("View")) {
-            if (ImGui::MenuItem("Zoom In", "Ctrl++")) { /* implement */ }
-            if (ImGui::MenuItem("Zoom Out", "Ctrl+-")) { /* implement */ }
-            if (ImGui::MenuItem("Toggle Grid", "Ctrl+G")) { currentState.grid = !currentState.grid; }
+            if (ImGui::MenuItem("Reset Canvas")) {
+                resize(window);
+            }
+
+            if (ImGui::MenuItem("Zoom In", "Ctrl+Scroll up")) { /* implement */ }
+            if (ImGui::MenuItem("Zoom Out", "Ctrl+Scroll down")) { /* implement */ }
+            if (ImGui::MenuItem("Toggle Grid")) { currentState.grid = !currentState.grid; }
             ImGui::EndMenu();
         }
 
@@ -622,11 +714,15 @@ void Gui::drawLeftPanel() {
 
     if (ImGui::Button("Colors", buttonSize))
         showColorPicker = !showColorPicker;
+    if (ImGui::Button("Code", buttonSize))
+        currentState.codeEditor = !currentState.codeEditor;
 
     ImGui::End();
 
     if (showColorPicker)
         drawColorSelector();
+    if (currentState.codeEditor)
+        codeWindow();
 }
 
 void Gui::drawAnimationPanel() {

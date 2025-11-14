@@ -14,7 +14,9 @@ States currentState = {
     sf::Color::White,
     true,
     true,
+    false,
     "",
+    false,
 };
 //sf::Clock clock;
 animationStates animationState = {
