@@ -13,7 +13,6 @@ Thumbs.db
 *.o
 *.obj
 *.a
-*.lib
 *.dll
 *.so
 *.pdb
