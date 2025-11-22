@@ -22,6 +22,7 @@ LuaEmbed::LuaEmbed(sf::RenderWindow& window) : window(window){
     lua_register(L, "pasteRegion", canvas_pasteRegion);
     lua_register(L, "setCurrentFrame", canvas_setCurrentFrame);
     lua_register(L, "setFrameDelay", canvas_setFrameDelay);
+    lua_register(L, "defineCanvas", canvas_defineCanvas);
     lua_pushlightuserdata(L, this);
     lua_pushcclosure(L, LuaEmbed::canvas_setFrames, 1);
     lua_setglobal(L, "defineFrames");
@@ -35,6 +36,19 @@ int LuaEmbed::canvas_setFrameDelay(lua_State *L) {
     currentState.canvas->frameTime = delay;
 
     return 0;
+}
+
+
+int LuaEmbed::canvas_defineCanvas(lua_State *L) {
+    int width = luaL_checkinteger(L, 1);
+    int height = luaL_checkinteger(L, 2);
+    if (width < 0) return luaL_error(L, "cannot be negative");
+    if (height < 0) return luaL_error(L, "cannot be negative");
+
+    canvasSize = sf::Vector2u(width, height);
+    return 0;
+
+
 }
 
 
@@ -85,9 +99,9 @@ int LuaEmbed::emplaceBack(lua_State *L) {
     for (int i = 0; i < frameCount; i++) {
 
         if (currentState.canvasPosition != sf::Vector2f{3,3}) {
-            currentState.nCanvas->emplace_back(&window, currentState.width, currentState.height, currentState.canvasPosition);
+            currentState.nCanvas->emplace_back(&window, canvasSize.x, canvasSize.y, currentState.canvasPosition);
         } else {
-            currentState.nCanvas->emplace_back(&window, currentState.width, currentState.height);
+            currentState.nCanvas->emplace_back(&window, canvasSize.x, canvasSize.y);
         }
     }
     currentState.currentFrame = 0;
@@ -109,7 +123,8 @@ int LuaEmbed::canvas_getWidth(lua_State* L) {
         return luaL_error(L, "Canvas is not initialized");
     }
 
-    int width = currentState.canvas->getCanvasSize().x;
+    // int width = currentState.canvas->getCanvasSize().x;
+    int width = canvasSize.x;
 
     lua_pushinteger(L, width);
 
@@ -125,8 +140,9 @@ int LuaEmbed::canvas_getHeight(lua_State* L) {
         return luaL_error(L, "Canvas is not initialized");
     }
 
-    int height = currentState.canvas->getCanvasSize().y;
+    // int height = currentState.canvas->getCanvasSize().y;
 
+    int height = canvasSize.y;
     lua_pushinteger(L, height);
 
 

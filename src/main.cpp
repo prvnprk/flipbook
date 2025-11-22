@@ -11,6 +11,9 @@
 #include "Canvas.hpp"
 #include "Events.hpp"
 #include "canvasStates.hpp"
+#include "pxrt.hpp"
+
+
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -21,7 +24,10 @@
 sf::Time accumulator = sf::Time::Zero;
 
 
-int main() {
+
+
+int main(int argc, char* argv[]) {
+
 
 	static sf::Clock globalClock;
 	static sf::Time accumulator = sf::Time::Zero;
@@ -53,11 +59,32 @@ int main() {
 
 
 
+	std::string pxrtFilePath;
+
+	if (argc > 1) {
+		pxrtFilePath = argv[1];
+		std::cout << pxrtFilePath << std::endl;
+	}
+
+
+
+
+
+
+
+
+
+
 	nCanvas.emplace_back(&window, currentState.width, currentState.height);
 	nCanvas.emplace_back(&window, currentState.width, currentState.height);
 
+
+
 	bool started = true;
 	sf::Clock deltaClock;
+
+
+
 	while (window.isOpen()) {
 
 
@@ -76,13 +103,14 @@ int main() {
 
 		while (std::optional event = window.pollEvent())
 		{
+			gui.processEvents(*event);
 			
 
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
 
 
-			gui.processEvents(*event);
+
 
 			if (!gui.wantMouse()) {
 
@@ -187,6 +215,36 @@ int main() {
 			auto it = currentState.nCanvas->begin();
 			std::advance(it, prevFrame);
 			currentState.canvas->setOnion(it->canvasImage);
+
+		}
+
+		if (!pxrtFilePath.empty()) {
+			pxrt open;
+			pxrt::pxrtFormat pxrtFile = open.readpxrt(pxrtFilePath.c_str());
+
+
+			if (pxrtFile.frames != 0) {
+				currentState.nCanvas->clear();
+				for (size_t i = 0; i < pxrtFile.frames; i++) {
+					if (currentState.canvasPosition != sf::Vector2f{3,3})
+						currentState.nCanvas->emplace_back(&window, pxrtFile.canvasData[i].width, pxrtFile.canvasData[i].height, currentState.canvasPosition);
+					else
+						currentState.nCanvas->emplace_back(&window, pxrtFile.canvasData[i].width, pxrtFile.canvasData[i].height);
+
+					currentState.nCanvas->back().frameTime = pxrtFile.canvasData[i].frameTime;
+					currentState.nCanvas->back().canvasImage.resize({ pxrtFile.canvasData[i].width , pxrtFile.canvasData[i].height }, pxrtFile.canvasData[i].pixels.data());
+				}
+
+				currentState.width = pxrtFile.canvasData[0].width;
+				currentState.height = pxrtFile.canvasData[0].height;
+				currentState.currentFrame = 0;
+				// currentState.canvas = &(*currentState.nCanvas)[0];
+				currentState.canvas = &(*currentState.nCanvas).front();
+
+				// resize(window);
+
+			}
+			pxrtFilePath.clear();
 
 		}
 

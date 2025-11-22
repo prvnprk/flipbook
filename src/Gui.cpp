@@ -4,6 +4,7 @@
 Gui::Gui(sf::RenderWindow& window) : window(window) {
     ImGui::SFML::Init(window);
     ImGuiIO& io = ImGui::GetIO();
+    ImGui::GetIO().IniFilename = nullptr;
 
 
     // ImFont* font = io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/arial.ttf", 22.0f);
@@ -195,6 +196,8 @@ void Gui::startUp() {
 
 
 void Gui::init() {
+
+
     startUp();
 	menuBar();
 	drawLeftPanel();

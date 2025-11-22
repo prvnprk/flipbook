@@ -15,6 +15,7 @@ class LuaEmbed {
     lua_State* L;
     sf::RenderWindow& window;
     static sf::Image temp;
+    inline static sf::Vector2u canvasSize = sf::Vector2u(currentState.width, currentState.height);;
 
 
 
@@ -33,6 +34,7 @@ public:
     static int canvas_copyRegion(lua_State* L);
     static int canvas_pasteRegion(lua_State* L);
     static int canvas_setFrameDelay(lua_State* L);
+    static int canvas_defineCanvas(lua_State* L);
 
     static int canvas_setPixel(lua_State* L);
     static int canvas_getPixel(lua_State* L);
