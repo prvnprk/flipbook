@@ -2,8 +2,8 @@
 // Created by Praveen P on 14-11-2025.
 //
 
-#ifndef PIKZEL_LUAEMBED_H
-#define PIKZEL_LUAEMBED_H
+#ifndef FLIPBOOK_LUAEMBED_H
+#define FLIPBOOK_LUAEMBED_H
 #include "include/lua.hpp"
 #include "SFML/Graphics.hpp"
 #include <iostream>
@@ -48,4 +48,4 @@ public:
 };
 
 
-#endif //PIKZEL_LUAEMBED_H
+#endif //FLIPBOOK_LUAEMBED_H
