@@ -508,11 +508,12 @@ void Gui::menuBar() {
 
 
         if (ImGui::BeginMenu("Edit")) {
-            if (ImGui::MenuItem("Undo", "Ctrl+Z")) { /* implement */ }
-            if (ImGui::MenuItem("Redo", "Ctrl+Y")) { /* implement */ }
-            if (ImGui::MenuItem("Cut", "Ctrl+X")) { /* implement */ }
-            if (ImGui::MenuItem("Copy", "Ctrl+C")) { /* implement */ }
-            if (ImGui::MenuItem("Paste", "Ctrl+V")) { /* implement */ }
+            if (ImGui::MenuItem("Undo", "Ctrl+Z")) {
+
+                    currentState.canvas->popFromUndoStack();
+
+            }
+
 
 
             ImGui::Separator();
@@ -539,16 +540,115 @@ void Gui::menuBar() {
                 resize(window);
             }
 
-            if (ImGui::MenuItem("Zoom In", "Ctrl+Scroll up")) { /* implement */ }
-            if (ImGui::MenuItem("Zoom Out", "Ctrl+Scroll down")) { /* implement */ }
+            if (ImGui::MenuItem("Zoom In", "Ctrl+Scroll up")) { currentState.view.zoom(0.8); window.setView(currentState.view);}
+            if (ImGui::MenuItem("Zoom Out", "Ctrl+Scroll down")) { currentState.view.zoom(1.2); window.setView(currentState.view);}
             if (ImGui::MenuItem("Toggle Grid")) { currentState.grid = !currentState.grid; }
             ImGui::EndMenu();
         }
 
 
+        static bool showAboutWindow = false;
+
+        static bool showDocumentationWindow = false;
+
+        if (showAboutWindow) {
+            ImGui::SetNextWindowSize(ImVec2(400, 0), ImGuiCond_Once);   // 400px width, auto height
+
+            if (ImGui::Begin("About Flipbook", &showAboutWindow, ImGuiWindowFlags_NoResize)) {
+
+                ImGui::TextWrapped(
+                    "Flipbook:\n"
+                    "A pixel art animation tool that lets you draw by hand or generate frames using Lua code."
+                );
+
+                ImGui::Separator();
+
+                if (ImGui::Button("Close")) {
+                    showAboutWindow = false;
+                }
+
+                ImGui::End();
+            }
+        }
+        if (showDocumentationWindow) {
+    ImGui::SetNextWindowSize(ImVec2(600, 500), ImGuiCond_Once); // initial size
+
+    if (ImGui::Begin("Flipbook Documentation", &showDocumentationWindow)) {
+
+        ImGui::TextWrapped("Flipbook Lua API Reference:");
+        ImGui::Separator();
+
+        // Make font bigger
+        ImGuiIO& io = ImGui::GetIO();
+        ImFont* font = io.Fonts->Fonts[0]; // default font
+        float prevSize = font->Scale;
+        font->Scale = 1.5f; // increase font size
+
+        // Scrollable, copyable child
+        ImGui::BeginChild("DocScroll", ImVec2(0, -40), true, ImGuiWindowFlags_HorizontalScrollbar);
+
+        const char* docs =
+R"(1. getWidth() -> integer
+   Returns canvas width.
+
+2. getHeight() -> integer
+   Returns canvas height.
+
+3. setPixel(x, y, color_table)
+   Draws a single pixel.
+
+4. getPixel(x, y) -> table
+   Returns {r, g, b, a} of a pixel.
+
+5. defineFrames(total_frames)
+   Initializes the animation buffer size. Call this second.
+
+6. setCurrentFrame(frame_index)
+   Target a specific frame to draw on (1-based index for frames).
+
+7. copyRegion(x, y, w, h)
+   Copies pixels from the current frame into an internal clipboard.
+   x, y must be >= 0. w, h must be > 0.
+
+8. pasteRegion(x, y)
+   Pastes the clipboard contents onto the current frame at (x, y).
+   x, y must be >= 0.
+
+9. moveRegion(x, y, w, h, target_x, target_y)
+   Moves a block of pixels from one location to another within the
+   current frame. All coordinates must be >= 0.
+
+10. setFrameDelay(delay_in_millisecond: integer)
+    Sets a delay on current frame.
+
+11. defineCanvas(width, height)
+    Initializes the canvas size.
+    width, height >= 0 and < 50.
+    Call this first.)";
+
+        ImGui::InputTextMultiline("##documentation", (char*)docs, strlen(docs)+1,
+                                  ImVec2(-1, -1),
+                                  ImGuiInputTextFlags_ReadOnly |
+                                  ImGuiInputTextFlags_NoHorizontalScroll);
+
+        ImGui::EndChild();
+
+        // Close button
+        if (ImGui::Button("Close")) {
+            showDocumentationWindow = false;
+        }
+
+        font->Scale = prevSize; // reset font scale
+        ImGui::End();
+    }
+}
+
+
+
+
         if (ImGui::BeginMenu("Help")) {
-            if (ImGui::MenuItem("About")) { /* implement */ }
-            if (ImGui::MenuItem("Documentation")) { /* implement */ }
+            if (ImGui::MenuItem("About")) {  showAboutWindow = true;}
+            if (ImGui::MenuItem("Documentation")) { showDocumentationWindow = true; }
             ImGui::EndMenu();
         }
 
