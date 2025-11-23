@@ -37,6 +37,7 @@ To build Flipbook, you need **CMake** and a **C++ Compiler** (such as MSVC on Wi
     `cmake --build build --config Release`
 4.  The executable will be generated in the `build/Release` directory (or `build/` depending on your OS).
 
+***
 ## Scripting & API Reference
 
 You can automate animation using the built-in code editor. You have access to the standard Lua `math` library and the custom functions listed below.
@@ -66,7 +67,7 @@ To initialize a script correctly, you must call these functions in this specific
 *   `pasteRegion(x, y)`: Pastes the clipboard contents onto the current frame at (x, y).
 *   `moveRegion(x, y, w, h, target_x, target_y)`: Moves a block of pixels from one location to another within the current frame.
 
-
+***
 
 ## Example Script
 
