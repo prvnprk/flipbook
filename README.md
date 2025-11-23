@@ -16,7 +16,7 @@ Projects are saved in a custom `.pxrt` format, and animations can be exported to
 *   Onion Skinning: See a transparent overlay of the previous frame while drawing.
 
 **Timeline & Playback**
-*   Add, Delete, and Copy frames.
+*   Add and Delete frames.
 *   Set specific Frame Duration (in milliseconds) to control timing.
 *   Real-time playback.
 
