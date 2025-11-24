@@ -45,7 +45,21 @@ int LuaEmbed::canvas_defineCanvas(lua_State *L) {
     if (width < 0) return luaL_error(L, "cannot be negative");
     if (height < 0) return luaL_error(L, "cannot be negative");
 
-    canvasSize = sf::Vector2u(width, height);
+    int w = width;
+    int h = height;
+
+
+
+    if (w > 100 || h > 100) {
+         return luaL_error(L,"Width or Height must be <= 100px");
+    } else {
+
+        canvasSize = sf::Vector2u(width, height);
+
+        currentState.width = w;
+        currentState.height = h;
+    }
+
     return 0;
 
 
