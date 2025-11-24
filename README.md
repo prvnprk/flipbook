@@ -107,6 +107,6 @@ end
 
 ## Animation Showcase
 
-![Ghost](examples/ghost.gif)   ![blackhole](examples/blackhole.gif) ![phone](examples/phone.gif)
+![Ghost](examples/ghost.gif)  ![shoot](examples/charshoot.gif)  ![blackhole](examples/blackhole.gif) ![phone](examples/phone.gif)
 
 
