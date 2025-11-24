@@ -110,9 +110,3 @@ end
 ![Ghost](examples/ghost.gif)   ![blackhole](examples/blackhole.gif) ![phone](examples/phone.gif)
 
 
-
-## Contributors
-
-*   [Praveen P](https://github.com/prvnprk)
-*   [Pramodgouda V K](https://github.com/Pramod1831)
-*   [Latesh Shetty](https://github.com/Lateshshetty)
