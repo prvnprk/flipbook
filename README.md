@@ -4,7 +4,7 @@
 
 ![flipbook](examples/flipbook.png)
 
-Flipbook is a pixel art animation engine that combines standard drawing tools with a Lua scripting environment. You can draw frame-by-frame animations by hand or use code to generate them procedurally.
+Flipbook is a pixel art animation software that combines standard drawing tools with a Lua scripting environment. You can draw frame-by-frame animations by hand or use code to generate them procedurally.
 
 Projects are saved in a custom `.pxrt` format, and animations can be exported to GIF, Frame can be exported to PNG.
 
